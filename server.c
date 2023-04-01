@@ -23,7 +23,6 @@ void handler2(int signum){
 		character[1] = 31;
 		write(0, &character[0], 1);
 		 	character[0] = 0;
-
 	}	
 	else
 		character[1]--;
