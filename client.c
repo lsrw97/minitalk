@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
         write(0, "you need 2 parameters: pid, message\n", 36);
     int i = 32;
     int j = -1;
-	printf("pid: %d\n", (int) getpid());
     while(argv[2][++j])
     {
         while(--i >= 0)

@@ -6,7 +6,6 @@ static int character[2];
 
 void handler1(int signum){
 	if(signum == SIGUSR1)
-	// printf("number: 0\n");
 	if(character[1] == 0)
 	{
 		character[1] = 31;
@@ -18,8 +17,6 @@ void handler1(int signum){
 }
 
 void handler2(int signum){
-	if(signum == SIGUSR2)
-	// printf("number: 1\n");
 		character[0] |= 1UL << character[1];
 	if(character[1] == 0)
 	{
