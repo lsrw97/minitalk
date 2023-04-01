@@ -8,18 +8,32 @@ int main(int argc, char *argv[])
     int num = 0;
     if(argc < 3)
         write(0, "you need 2 parameters: pid, message\n", 36);
-    sleep(2);
     int i = 32;
-    while(--i >= 0)
+    int j = -1;
+	printf("pid: %d\n", (int) getpid());
+    while(argv[2][++j])
     {
-        printf("%lu", (2147483647 >> i) & 0x01);
-        if(ft_strlen(ft_atoi(argv[2]) >> i) & 0x01)
-            kill(ft_atoi(argv[1]), SIGUSR2);
-        else
-            kill(ft_atoi(argv[1]), SIGUSR1);
+        while(--i >= 0)
+        {
+            // printf("%d", (argv[2][j] >> i) & 0x01);
+            if((argv[2][j] >> i) & 0x01)
+                kill(ft_atoi(argv[1]), SIGUSR2);
+            else
+                kill(ft_atoi(argv[1]), SIGUSR1);
+            usleep(20);
+        }
+        usleep(20);
+
+        i = 32;
     }
-    
-    printf("\n\nanswer%d", num);
+    // while(--i >= 0)
+    // {
+    //     kill(ft_atoi(argv[1]), SIGUSR2);
+    //     usleep(200);
+    // }
+    // pause();
+
+    // printf("\n\nanswer%d", num);
     // printf("%zu", ft_strlen(argv[2]));
     // while(1)
     // {
