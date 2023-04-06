@@ -1,42 +1,51 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
-#include "./libft/libft.h"
+#include "./ft_printf/libft/libft.h"
+#include <wchar.h>      /* wint_t */
+#include "./ft_printf/ft_printf.h"
+
+void handler1(){
+    ft_printf("\033[0;32m");
+    ft_printf("Message was received!\n");
+    ft_printf("\033[0m");
+}
+
+void sendCharacter(int c, int pid)
+{
+    int i;
+
+    i = 32;
+    while(--i >= 0)
+    {
+        if((c >> i) & 0x01)
+            kill(pid, SIGUSR2);
+        else
+            kill(pid, SIGUSR1);
+        usleep(20);
+    }
+}
 
 int main(int argc, char *argv[])
 {
-    int num = 0;
     if(argc < 3)
-        write(0, "you need 2 parameters: pid, message\n", 36);
-    int i = 32;
-    int j = -1;
+        write(0, "you need 2 parameters: pid, message n", 36);
+    int j;
+    struct sigaction    sa;
+    int len;
+
+    sa.sa_handler = handler1;
+    j = -1;
+    len = ft_strlen(argv[2]) + 1;
+    if(sigaction(SIGUSR1, &sa, NULL) == -1)
+        perror("SIGACTION");
+    sendCharacter(getpid(), ft_atoi(argv[1]));
+    sendCharacter(len, ft_atoi(argv[1]));
     while(argv[2][++j])
     {
-        while(--i >= 0)
-        {
-            // printf("%d", (argv[2][j] >> i) & 0x01);
-            if((argv[2][j] >> i) & 0x01)
-                kill(ft_atoi(argv[1]), SIGUSR2);
-            else
-                kill(ft_atoi(argv[1]), SIGUSR1);
-            usleep(20);
-        }
-        usleep(20);
-
-        i = 32;
+        sendCharacter(argv[2][j], ft_atoi(argv[1]));
     }
-    // while(--i >= 0)
-    // {
-    //     kill(ft_atoi(argv[1]), SIGUSR2);
-    //     usleep(200);
-    // }
-    // pause();
-
-    // printf("\n\nanswer%d", num);
-    // printf("%zu", ft_strlen(argv[2]));
-    // while(1)
-    // {
-        
-    // }
-    // printf("%ld", (ft_strlen(argv[2]) >> 2) & 0x01);
+    sendCharacter('\n', ft_atoi(argv[1]));
 }
+
+
